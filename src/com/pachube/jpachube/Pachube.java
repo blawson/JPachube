@@ -1,6 +1,7 @@
 package com.pachube.jpachube;
 
 import java.awt.Color;
+import java.net.Socket;
 
 import com.pachube.jpachube.httpClient.HttpClient;
 import com.pachube.jpachube.httpClient.HttpMethod;
@@ -8,21 +9,23 @@ import com.pachube.jpachube.httpClient.HttpRequest;
 import com.pachube.jpachube.httpClient.HttpResponse;
 import com.pachube.jpachube.httpClient.SocketClient;
 
-
-public class Pachube {
+/**
+ * 
+ * @author Sam Wilson
+ */
+public class Pachube implements PachubeClient {
 
 	private HttpClient client;
 
 	/**
 	 * API key for your user account on Pachube
 	 */
-	private String API_KEY;
+	private String apiKey;
 	
-	public Pachube(String APIKEY) {
-		
+	public Pachube(String apiKey) {
 		super();
-		this.API_KEY = APIKEY;
-		this.client = new SocketClient("www.pachube.com");
+		this.apiKey = apiKey;
+		this.client = new SocketClient("pachube.com");
 	}
 
 	/**
@@ -38,7 +41,7 @@ public class Pachube {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds/"
 				+ feed + ".xml");
 		hr.setMethod(HttpMethod.GET);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		HttpResponse g = client.send(hr);
 		
 		if (g.getHeaderItem("Status").equals("HTTP/1.1 200 OK")) {
@@ -68,7 +71,7 @@ public class Pachube {
 		
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds");
 		hr.setMethod(HttpMethod.POST);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		hr.setBody(f.toXML());
 		HttpResponse g = client.send(hr);
 
@@ -97,7 +100,7 @@ public class Pachube {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds/"
 				+ feed + ".xml");
 		hr.setMethod(HttpMethod.PUT);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		hr.setBody(s);
 		HttpResponse g = client.send(hr);
 
@@ -121,7 +124,7 @@ public class Pachube {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds/"
 				+ feed);
 		hr.setMethod(HttpMethod.DELETE);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		return client.send(hr);
 	}
 
@@ -139,7 +142,7 @@ public class Pachube {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds/"
 				+ feed + "/datastreams/");
 		hr.setMethod(HttpMethod.POST);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		hr.setBody(s);
 		HttpResponse g = client.send(hr);
 
@@ -159,11 +162,11 @@ public class Pachube {
 	 * @param datastream
 	 * @return
 	 */
-	public HttpResponse deleteDatastream(int feed, int datastream) {
+	public HttpResponse deleteDatastream(int feed, String datastream) {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds/"
 				+ feed + "/datastreams/" + datastream);
 		hr.setMethod(HttpMethod.DELETE);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		return client.send(hr);
 	}
 
@@ -177,11 +180,11 @@ public class Pachube {
 	 * @param s
 	 * @return
 	 */
-	public HttpResponse updateDatastream(int feed, int datastream, String s) {
+	public HttpResponse updateDatastream(int feed, String datastream, String s) {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds/"
 				+ feed + "/datastreams/" + datastream);
 		hr.setMethod(HttpMethod.PUT);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		hr.setBody(s);
 		System.out.println(hr.getHttpCommand());
 		return client.send(hr);
@@ -195,11 +198,11 @@ public class Pachube {
 	 * @param datastream
 	 * @return
 	 */
-	public HttpResponse getDatastream(int feed, int datastream) {
+	public HttpResponse getDatastream(int feed, String datastream) {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds/"
 				+ feed + "/datastreams/" + datastream + ".xml");
 		hr.setMethod(HttpMethod.GET);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		return client.send(hr);
 	}
 
@@ -211,11 +214,11 @@ public class Pachube {
 	 * @param datastream
 	 * @return
 	 */
-	public Double[] getDatastreamHistory(int feed, int datastream) {
+	public Double[] getDatastreamHistory(int feed, String datastream) {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/feeds/" + feed
 				+ "/datastreams/" + datastream + "/history.csv");
 		hr.setMethod(HttpMethod.GET);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		String str = client.send(hr).getBody();
 		String[] arr = str.split(",");
 		Double[] arr1 = new Double[arr.length];
@@ -235,11 +238,11 @@ public class Pachube {
 	 * @param datastream
 	 * @return
 	 */
-	public String[] getDatastreamArchive(int feed, int datastream) {
+	public String[] getDatastreamArchive(int feed, String datastream) {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/feeds/" + feed
 				+ "/datastreams/" + datastream + "/archive.csv");
 		hr.setMethod(HttpMethod.GET);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		String str = client.send(hr).getBody();
 		return str.split("\n");
 
@@ -255,7 +258,7 @@ public class Pachube {
 	public String createTrigger(Trigger t) throws PachubeException {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/triggers");
 		hr.setMethod(HttpMethod.POST);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		hr.setBody(t.toString());
 		HttpResponse h = client.send(hr);
 		if (h.getHeaderItem("Status").equals("HTTP/1.1 201 Created")) {
@@ -274,7 +277,7 @@ public class Pachube {
 	public Trigger getTrigger(int id) throws PachubeException {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/triggers/"+id+".xml");
 		hr.setMethod(HttpMethod.GET);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		HttpResponse h = client.send(hr);
 		
 		return PachubeFactory.toTrigger(h.getBody())[0];
@@ -289,7 +292,7 @@ public class Pachube {
 	public Trigger[] getTriggers() throws PachubeException {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/triggers/");
 		hr.setMethod(HttpMethod.GET);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		HttpResponse h = client.send(hr);
 		
 		return PachubeFactory.toTrigger(h.getBody());
@@ -304,7 +307,7 @@ public class Pachube {
 	public HttpResponse deleteTrigger(int id){
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/triggers/"+id);
 		hr.setMethod(HttpMethod.DELETE);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		return client.send(hr);
 		
 	}
@@ -318,7 +321,7 @@ public class Pachube {
 	public HttpResponse updateTrigger(int id,Trigger t){
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/triggers/"+id);
 		hr.setMethod(HttpMethod.PUT);
-		hr.addHeaderItem("X-PachubeApiKey", this.API_KEY);
+		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		hr.setBody(t.toString());
 		return client.send(hr);
 		
@@ -339,7 +342,7 @@ public class Pachube {
 	 *            Color of the line
 	 * @return String which can be used to form a URL Object.
 	 */
-	public String showGraph(int feedID, int streamID, int width, int height,
+	public String showGraph(int feedID, String streamID, int width, int height,
 			Color c) {
 		String hexRed = Integer.toHexString(c.getRed()).toString();
 		String hexGreen = Integer.toHexString(c.getGreen()).toString();
