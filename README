@@ -1,0 +1,5 @@
+JPachube
+========
+
+Basic Java client library for Pachube. Currently doesn't work for datastreams
+with string ids.
