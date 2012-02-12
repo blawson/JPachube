@@ -97,7 +97,7 @@ public class Feed {
 			if(this.p.createDatastream(this.id, d.toXMLWithWrapper())){
 				this.data.add(d);
 			}
-			
+
 		}
 	}
 
@@ -105,7 +105,7 @@ public class Feed {
 	 * Deletes a datastream
 	 * @param id id of the datastream to delete
 	 */
-	public void deleteDatastream(int id) {
+	public void deleteDatastream(String id) {
 		if (p != null) {
 			this.p.deleteDatastream(this.id, id);
 		}
@@ -116,7 +116,7 @@ public class Feed {
 	 * @param id id of the datastream to update
 	 * @param value new datastream to replace the previous datastream
 	 */
-	public void updateDatastream(int id, Double value) {
+	public void updateDatastream(String id, String value) {
 		if (p != null) {
 			Data d = this.lookup(id);
 			if (d != null) {
@@ -145,7 +145,7 @@ public class Feed {
 	 * @param id id of the datastream to get
 	 * @return
 	 */
-	public Double getDatastream(int id) {
+	public String getDatastream(String id) {
 		return lookup(id).getValue();
 	}
 
@@ -154,7 +154,7 @@ public class Feed {
 	 * @param id id of datastream
 	 * @return
 	 */
-	public Double[] getDatastreamHistory(int id) {
+	public String[] getDatastreamHistory(String id) {
 		if (p != null) {
 			return this.p.getDatastreamHistory(this.id, id);
 		}
@@ -166,13 +166,13 @@ public class Feed {
 	 * @param id
 	 * @return
 	 */
-	public String[] getDatastreamArchive(int id) {
+	public String[] getDatastreamArchive(String id) {
 		if (p != null) {
 			return this.p.getDatastreamArchive(this.id, id);
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get the url of a graph
 	 * @param id id of the datastream
@@ -181,7 +181,7 @@ public class Feed {
 	 * @param c Color of the Line on the graph
 	 * @return
 	 */
-	public String getGraph(int id, int width, int height, Color c){
+	public String getGraph(String id, int width, int height, Color c){
 		if(p != null){
 			return  this.p.showGraph(this.id, id, width, height, c);
 		}
@@ -193,7 +193,7 @@ public class Feed {
 	 * @param id id of the Data object to get
 	 * @return
 	 */
-	private Data lookup(int id) {
+	private Data lookup(String id) {
 		for (int i = 0; i < this.data.size(); i++) {
 			if (this.data.get(i).getId() == id) {
 				return this.data.get(i);
@@ -216,7 +216,7 @@ public class Feed {
 
 	/**
 	 * Add a datastream to the internal data collection
-	 * This method does not automatically submit data to pachube, this method is intended 
+	 * This method does not automatically submit data to pachube, this method is intended
 	 * for the creation of feeds.
 	 * @param d
 	 */
@@ -266,7 +266,7 @@ public class Feed {
 	}
 
 	/**
-	 * Sets the title of the feed, this method will submit any changes to Pachube 
+	 * Sets the title of the feed, this method will submit any changes to Pachube
 	 * @param title
 	 * @throws PachubeException
 	 */
