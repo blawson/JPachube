@@ -15,7 +15,7 @@ public class ExamplePachubeClient {
 
 		try {
 			Feed feed = createFeed();
-			
+
 			printFeedForId(feed.getId());
 		} catch (PachubeException e) {
 			System.err.println(e.getMessage());
@@ -29,14 +29,14 @@ public class ExamplePachubeClient {
 		Feed f = new Feed();
 		f.setTitle("Test Feed from JPachube");
 		Data a = new Data();
-		a.setId(0);
+		a.setId("0");
 		a.setMaxValue(100d);
 		a.setMinValue(0d);
 		a.setTag("Test feed");
-		a.setValue(30d);
+		a.setValue("30");
 		f.addData(a);
 		Feed g = p.createFeed(f);
-		
+
 		// The Feed 'f' is does not represent the feed on pachube any
 		// Changes made to this object will not alter the online feed.
 		System.out.println("The id of the new feed is:");
@@ -51,7 +51,7 @@ public class ExamplePachubeClient {
 		try {
 			Feed feed = pachubeClient.getFeed(feedId);
 
-			HttpResponse data = pachubeClient.getDatastream(feed.getId(), 1);
+			HttpResponse data = pachubeClient.getDatastream(feed.getId(), "1");
 
 			System.out.println(data.getBody());
 		} catch (PachubeException e) {
