@@ -1,7 +1,6 @@
 package com.pachube.jpachube;
 
 import java.awt.Color;
-import java.net.Socket;
 
 import com.pachube.jpachube.httpClient.HttpClient;
 import com.pachube.jpachube.httpClient.HttpMethod;
