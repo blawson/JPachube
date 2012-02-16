@@ -2,17 +2,17 @@ package com.pachube.jpachube;
 
 public class Data {
 
-	private int id;
+	private String id;
 
 	private String tag;
 
-	private double value;
+	private String value;
 
 	private Double minValue;
 
 	private Double maxValue;
 
-	public Data(int id, String tag, double value, Double minValue,
+	public Data(String id, String tag, String value, Double minValue,
 			Double maxValue) {
 		super();
 		this.id = id;
@@ -27,15 +27,11 @@ public class Data {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
-		this.id = Integer.parseInt(id);
-	}
-
-	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -47,15 +43,11 @@ public class Data {
 		this.tag = tag;
 	}
 
-	public double getValue() {
+	public String getValue() {
 		return value;
 	}
 
 	public void setValue(String value) {
-		this.value = Double.parseDouble(value);
-	}
-
-	public void setValue(double value) {
 		this.value = value;
 	}
 
@@ -90,7 +82,7 @@ public class Data {
 			this.maxValue = Double.parseDouble(maxValue);
 		}
 	}
-	
+
 	public String toXMLWithWrapper(){
 		String ret = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<eeml xmlns=\"http://www.eeml.org/xsd/005\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"5\" xsi:schemaLocation=\"http://www.eeml.org/xsd/005 http://www.eeml.org/xsd/005/005.xsd\"><environment>";
 		ret = ret + this.toXML() + "</environment></eeml>";
@@ -106,14 +98,14 @@ public class Data {
 		if (this.minValue != null) {
 			ret = ret + "minValue=\"" + this.minValue + "\" ";
 		}
-		
+
 		if(this.maxValue != null){
 			ret = ret + "maxValue=\""+this.maxValue+"\" ";
 		}
 		ret = ret + ">"+ this.value +"</value>\n\t";
-		
+
 		ret = ret + "</data>";
-		
+
 		return ret;
 	}
 

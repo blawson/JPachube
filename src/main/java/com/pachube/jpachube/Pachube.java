@@ -1,7 +1,6 @@
 package com.pachube.jpachube;
 
 import java.awt.Color;
-import java.net.Socket;
 
 import com.pachube.jpachube.httpClient.HttpClient;
 import com.pachube.jpachube.httpClient.HttpMethod;
@@ -10,10 +9,10 @@ import com.pachube.jpachube.httpClient.HttpResponse;
 import com.pachube.jpachube.httpClient.SocketClient;
 
 /**
- * 
+ *
  * @author Sam Wilson
  */
-public class Pachube implements PachubeClient {
+public class Pachube {
 
 	private HttpClient client;
 
@@ -21,7 +20,7 @@ public class Pachube implements PachubeClient {
 	 * API key for your user account on Pachube
 	 */
 	private String apiKey;
-	
+
 	public Pachube(String apiKey) {
 		super();
 		this.apiKey = apiKey;
@@ -30,7 +29,7 @@ public class Pachube implements PachubeClient {
 
 	/**
 	 * Gets a Feed by Feed ID
-	 * 
+	 *
 	 * @param feed
 	 *            Id of the Pachube feed to retrieve
 	 * @return Feed which corresponds to the id provided as the parameter
@@ -43,7 +42,7 @@ public class Pachube implements PachubeClient {
 		hr.setMethod(HttpMethod.GET);
 		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		HttpResponse g = client.send(hr);
-		
+
 		if (g.getHeaderItem("Status").equals("HTTP/1.1 200 OK")) {
 			return PachubeFactory.toFeed(this, g.getBody());
 		} else {
@@ -55,7 +54,7 @@ public class Pachube implements PachubeClient {
 	 * Creates a new feed from the feed provide. The feed provide should have no
 	 * ID, and after this method is called is usless, to make chanegs to the new
 	 * feed methods should be invoked on the return object.
-	 * 
+	 *
 	 * @param f
 	 *            Feed to create, This Feed Should have no ID field and atleast
 	 *            should have its title field filled in. This feed is not 'live'
@@ -66,9 +65,9 @@ public class Pachube implements PachubeClient {
 	 * @throws PachubeException
 	 *             If something goes wrong.
 	 */
-	
+
 	public Feed createFeed(Feed f) throws PachubeException {
-		
+
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/api/feeds");
 		hr.setMethod(HttpMethod.POST);
 		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
@@ -90,7 +89,7 @@ public class Pachube implements PachubeClient {
 	 * This Method is not intended to be used by Users, instead get the Feed
 	 * object using getFeed() and update the Feed from there, All changes will
 	 * be made to the online Feed.
-	 * 
+	 *
 	 * @param feed
 	 * @param s
 	 * @return
@@ -115,7 +114,7 @@ public class Pachube implements PachubeClient {
 	 * Delete a Feed specified by the feed id. If any Feed object exists that is
 	 * a representation of the item to be deleted, they will no longer work and
 	 * will throw errors if method are invoked on them.
-	 * 
+	 *
 	 * @param feed
 	 *            If of the feed to delete
 	 * @return HttpResponse
@@ -132,7 +131,7 @@ public class Pachube implements PachubeClient {
 	 * This Method is not intended to be used by Users, instead get the Feed
 	 * object using getFeed() and create Datastreams from there, All changes
 	 * will be made to the online Feed.
-	 * 
+	 *
 	 * @param feed
 	 * @param s
 	 * @return
@@ -157,7 +156,7 @@ public class Pachube implements PachubeClient {
 	 * This Method is not intended to be used by Users, instead get the Feed
 	 * object using getFeed() and delete Datastreams from there, All changes
 	 * will be made to the online Feed.
-	 * 
+	 *
 	 * @param feed
 	 * @param datastream
 	 * @return
@@ -174,7 +173,7 @@ public class Pachube implements PachubeClient {
 	 * This Method is not intended to be used by Users, instead get the Feed
 	 * object using getFeed() and update Datastreams from there, All changes
 	 * will be made to the online Feed.
-	 * 
+	 *
 	 * @param feed
 	 * @param datastream
 	 * @param s
@@ -193,7 +192,7 @@ public class Pachube implements PachubeClient {
 	/**
 	 * This Method is not intended to be used by Users, instead get the Feed
 	 * object using getFeed() and get Datastreams from there.
-	 * 
+	 *
 	 * @param feed
 	 * @param datastream
 	 * @return
@@ -209,31 +208,33 @@ public class Pachube implements PachubeClient {
 	/**
 	 * This Method is not intended to be used by Users, instead get the Feed
 	 * object using getFeed() and access Datastream history from there.
-	 * 
+   *
+   * @deprecated Access to this data should just be via the API now.
+	 *
 	 * @param feed
 	 * @param datastream
 	 * @return
 	 */
-	public Double[] getDatastreamHistory(int feed, String datastream) {
+	@Deprecated public String[] getDatastreamHistory(int feed, String datastream) {
 		HttpRequest hr = new HttpRequest("http://www.pachube.com/feeds/" + feed
 				+ "/datastreams/" + datastream + "/history.csv");
 		hr.setMethod(HttpMethod.GET);
 		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		String str = client.send(hr).getBody();
 		String[] arr = str.split(",");
-		Double[] arr1 = new Double[arr.length];
+		String[] history = new String[arr.length];
 		for (int i = 0; i < arr.length; i++) {
-			arr1[i] = Double.parseDouble(arr[1]);
+			history[i] = arr[1];
 		}
 
-		return arr1;
+		return history;
 
 	}
 
 	/**
 	 * This Method is not intended to be used by Users, instead get the Feed
 	 * object using getFeed() and access Datastream archive from there.
-	 * 
+	 *
 	 * @param feed
 	 * @param datastream
 	 * @return
@@ -250,7 +251,7 @@ public class Pachube implements PachubeClient {
 
 	/**
 	 * Creates a Trigger on pachube from the object provided.
-	 * 
+	 *
 	 * @param t
 	 * @return
 	 * @throws PachubeException
@@ -268,10 +269,10 @@ public class Pachube implements PachubeClient {
 		}
 
 	}
-	
+
 	/**
 	 * Gets a Trigger from pachube specified by the parameter
-	 * 
+	 *
 	 * @param id id of the Trigger to get
 	 */
 	public Trigger getTrigger(int id) throws PachubeException {
@@ -279,14 +280,14 @@ public class Pachube implements PachubeClient {
 		hr.setMethod(HttpMethod.GET);
 		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		HttpResponse h = client.send(hr);
-		
+
 		return PachubeFactory.toTrigger(h.getBody())[0];
 
 	}
-	
+
 	/**
 	 * Gets all the Triggers owned by the authenticating user
-	 * 
+	 *
 	 * @param id id of the Trigger to get
 	 */
 	public Trigger[] getTriggers() throws PachubeException {
@@ -294,11 +295,11 @@ public class Pachube implements PachubeClient {
 		hr.setMethod(HttpMethod.GET);
 		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		HttpResponse h = client.send(hr);
-		
+
 		return PachubeFactory.toTrigger(h.getBody());
 
 	}
-	
+
 	/**
 	 * Deletes a Trigger from pachube
 	 * @param id id of the trigger to delete
@@ -309,9 +310,9 @@ public class Pachube implements PachubeClient {
 		hr.setMethod(HttpMethod.DELETE);
 		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		return client.send(hr);
-		
+
 	}
-	
+
 	/**
 	 * Updates a Trigger on pachube
 	 * @param id id of the triggerto update
@@ -324,12 +325,12 @@ public class Pachube implements PachubeClient {
 		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		hr.setBody(t.toString());
 		return client.send(hr);
-		
+
 	}
 
 	/**
 	 * Gets a Pachube graph of the datastream
-	 * 
+	 *
 	 * @param feedID
 	 *            ID of feed the datastream belongs to.
 	 * @param streamID

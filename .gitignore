@@ -1,2 +1,24 @@
-src/com/pachube/jpachube/*.class
-src/com/pachube/jpachube/httpClient/*.class
+# Maven ignore
+
+target/
+
+# Eclipse ignores
+
+.project
+.metadata
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
