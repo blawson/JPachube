@@ -185,7 +185,6 @@ public class Pachube {
 		hr.setMethod(HttpMethod.PUT);
 		hr.addHeaderItem("X-PachubeApiKey", this.apiKey);
 		hr.setBody(s);
-		System.out.println(hr.getHttpCommand());
 		return client.send(hr);
 	}
 
