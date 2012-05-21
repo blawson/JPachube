@@ -35,6 +35,10 @@ public class Data {
 		this.id = id;
 	}
 
+	public void setId(double id) {
+		this.id = String.valueOf(id);
+	}
+
 	public String getTag() {
 		return tag;
 	}
@@ -49,6 +53,10 @@ public class Data {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public void setValue(double value) {
+		this.value = String.valueOf(value);
 	}
 
 	public Double getMinValue() {
@@ -78,7 +86,7 @@ public class Data {
 	}
 
 	public void setMaxValue(String maxValue) {
-		if (minValue != null) {
+		if (maxValue != null) {
 			this.maxValue = Double.parseDouble(maxValue);
 		}
 	}
