@@ -139,7 +139,7 @@ public class PachubeFactory {
 
             h = n.getNamedItem("disposition");
             if (h != null) {
-                l.setExposure(Exposure.valueOf(h.getNodeValue()));
+                l.setDisposition(Disposition.valueOf(h.getNodeValue()));
             }
 
             if (c.getNodeType() == Node.ELEMENT_NODE) {

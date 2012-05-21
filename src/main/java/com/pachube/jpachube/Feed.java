@@ -195,7 +195,7 @@ public class Feed {
 	 */
 	private Data lookup(String id) {
 		for (int i = 0; i < this.data.size(); i++) {
-			if (this.data.get(i).getId() == id) {
+			if (this.data.get(i).getId().equals(id)) {
 				return this.data.get(i);
 			}
 		}
